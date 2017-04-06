@@ -51,54 +51,12 @@ def heavy_resources(activity,bytes_used):
 
 
 
-def aggreg(date_time):
-    a = date_time.replace('[','')
-    if date_time in time_agg:
-        time_agg[date_time] = time_agg[date_time] +1
+def aggreg(datend_timeime):
+    a = datend_timeime.replace('[','')
+    if datend_timeime in time_agg:
+        time_agg[datend_timeime] = time_agg[datend_timeime] +1
     else:
-        time_agg[date_time] = 1
-
-
-
-
-
-
-
-
-    
-     
-    """time_agg = dict(lis)
-    m = len(lis)-1
-    
-    start_index = 0
-    start_time = datetime.datetime.strptime(lis[start_index][0], '%d/%b/%Y:%H:%M:%S')
-    end_time = datetime.datetime.strptime(lis[m][0], '%d/%b/%Y:%H:%M:%S')
-    time_max = start_time + datetime.timedelta(seconds=3600)
-    start_value = lis[start_index][1]
-    count = 0
-
-    
-    while start_time <= end_time:
-        while j < time_max:
-            next_time =  datetime.datetime.strftime(j,'%d/%b/%Y:%H:%M:%S')
-            if next_time in time_agg:
-                summ = summ + time_agg[next_time]
-                
-                j =  j+ datetime.timedelta(seconds=1)
-            else:
-                j =  j+ datetime.timedelta(seconds=1)
-        c.append((start_time,summ))
-        c[start_time] = summ
-        exis_time = datetime.datetime.strftime(s_t,'%d/%b/%Y:%H:%M:%S')
-        if exis_time in time_agg:
-            summ = summ - time_agg[exis_time]
-        start_time = start_time+datetime.timedelta(seconds=1)
-        nst = datetime.datetime.strftime(start_time,'%d/%b/%Y:%H:%M:%S')
-        if nst in time_agg:
-            summ = summ + time_agg[nst]
-        time_max = time_max + datetime.timedelta(seconds=1)"""
-
-
+        time_agg[datend_timeime] = 1
 
 
 
@@ -207,32 +165,31 @@ for each in log:
         count = 1
 
     blocked_requests(parts[0],parts[3],parts[6],parts[len(parts)-2])
-    #aggreg(date)
 
 
+lis.append((end,count))   #to take care of the last case
 
-
-
-
-
-
-
-
-
-
+# sort ip by their values
 sorted_ips = sorted(ip_names.items(), key=lambda x: x[1],reverse=True)
 with open(args[2],'w')as hosts:
     for i in range(0,10) if len(sorted_ips)>10 else range(0,len(sorted_ips)):
         hosts.write(sorted_ips[i][0]+','+str(sorted_ips[i][1])+'\n')
 
+
+
+#sort resources by their value
 sorted_res = sorted(resources.items(), key=lambda x: x[1],reverse=True)
 
 with open(args[4],'w')as hosts:
     for i in range(0,10) if len(sorted_res)>10 else range(0,len(sorted_res)) :
         hosts.write(sorted_res[i][0]+'\n')
 
+
+
+
 start = log[0].split(' ')[3].replace('[','')
 end  = log[size].split(' ')[3].replace('[','') 
+time_zone = log[0].split(' ')[4].replace(']','')
 
 
 time_dict = dict(lis)
@@ -241,75 +198,76 @@ time_dict = dict(lis)
 
 
 
-start_time = datetime.datetime.strptime(start, '%d/%b/%Y:%H:%M:%S')
-end_time = datetime.datetime.strptime(end, '%d/%b/%Y:%H:%M:%S')
+#start_time = datetime.datetime.strptime(start, '%d/%b/%Y:%H:%M:%S')
+#end_time = datetime.datetime.strptime(end, '%d/%b/%Y:%H:%M:%S')
 
-
+#part 3 
 
 
 start_index = 0
 m = len(lis) - 1
-s_t = datetime.datetime.strptime(lis[start_index][0], '%d/%b/%Y:%H:%M:%S')
-e_t = datetime.datetime.strptime(lis[m][0], '%d/%b/%Y:%H:%M:%S')
-t_max = s_t + datetime.timedelta(seconds=3600)
-s_v = lis[start_index][1]
-count = 0
+start_time = datetime.datetime.strptime(lis[start_index][0], '%d/%b/%Y:%H:%M:%S')
+end_time = datetime.datetime.strptime(lis[m][0], '%d/%b/%Y:%H:%M:%S')
 
-summ = s_v
-j=1
-j =  s_t+ datetime.timedelta(seconds=1)
-while s_t <= e_t:
-    while j < t_max:
+time_max = start_time + datetime.timedelta(seconds=3600)
+
+start_value = lis[start_index][1]
+
+count = 0
+summ = start_value
+j =  start_time + datetime.timedelta(seconds=1)
+while start_time <= end_time:
+
+    while j < time_max:
+
         next_time =  datetime.datetime.strftime(j,'%d/%b/%Y:%H:%M:%S')
+
         if next_time in time_dict:
             summ = summ + time_dict[next_time]
-            
+
             j =  j+ datetime.timedelta(seconds=1)
+
         else:
             j =  j+ datetime.timedelta(seconds=1)
-    c.append((s_t,summ))
-    exis_time = datetime.datetime.strftime(s_t,'%d/%b/%Y:%H:%M:%S')
-    if exis_time in time_dict:
-        summ = summ - time_dict[exis_time]
-    s_t = s_t+datetime.timedelta(seconds=1)
-    nst = datetime.datetime.strftime(s_t,'%d/%b/%Y:%H:%M:%S')
-    if nst in time_dict:
-        summ = summ + time_dict[nst]
-    t_max = t_max + datetime.timedelta(seconds=1)
+    
+    c.append((start_time,summ))
 
+    existart_timeime = datetime.datetime.strftime(start_time,'%d/%b/%Y:%H:%M:%S')
 
+    if existart_timeime in time_dict:
 
+        summ = summ - time_dict[existart_timeime]
 
-
-
-
-
-
-"""
-while start_time <= end_time:
-    while j < time_max:
-        next_time =  datetime.datetime.strftime(j,'%d/%b/%Y:%H:%M:%S')
-        if next_time in time_agg:
-            summ = summ + time_agg[next_time]
-            
-            
-            j =  j+ datetime.timedelta(seconds=1)
-        else:
-            j =  j+ datetime.timedelta(seconds=1)
-    #c.append((start_time,summ))
-    c[start_time] = summ
-    exis_time = datetime.datetime.strftime(start_time,'%d/%b/%Y:%H:%M:%S')
-    if exis_time in time_agg:
-        summ = summ - time_agg[exis_time]
     start_time = start_time+datetime.timedelta(seconds=1)
-    nst = datetime.datetime.strftime(start_time,'%d/%b/%Y:%H:%M:%S')
-    if nst in time_agg:
-        summ = summ + time_agg[nst]
-    time_max = time_max + datetime.timedelta(seconds=1)"""
+
+
+    time_max = time_max + datetime.timedelta(seconds=1)
+
+
+
+
 
 d = dict(c)
 sorted_wind = sorted(d.items(), key=lambda x: x[1],reverse=True)
+if len(sorted_wind) > 10:
+    sorted_wind = sorted_wind[0:10]
+sorted_wind.sort(key=lambda x: x[0])
+sorted_wind.sort(key=lambda x: x[1], reverse=True)
+
+
+#the test case had no new line in hours.txt but it had in hosts and resources. So formatting accordingly
+
 with open(args[3],'w')as hosts:
-    for i in range(0,10) if len(sorted_wind)>10 else range(0,len(sorted_wind)):
-        hosts.write(datetime.datetime.strftime(sorted_wind[i][0],'%d/%b/%Y:%H:%M:%S')+','+str(sorted_wind[i][1])+'\n')
+    if len(sorted_wind)>10:
+        length  = 10
+    else:
+        length = len(sorted_wind)
+
+    for i in range(0,length):
+
+        if i < length -1:
+            hosts.write(datetime.datetime.strftime(sorted_wind[i][0],'%d/%b/%Y:%H:%M:%S')+' '+ time_zone+','+str(sorted_wind[i][1])+'\n')
+        else:
+            hosts.write(datetime.datetime.strftime(sorted_wind[i][0],'%d/%b/%Y:%H:%M:%S')+' '+ time_zone+','+str(sorted_wind[i][1]))
+
 
