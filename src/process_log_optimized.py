@@ -55,10 +55,11 @@ def blocked_requests(ip,date,activity,code):
             login_fail.pop(ip)
             return
         if login_fail[ip]['flag']==True and (time-login_fail[ip]['t3']).total_seconds() < 300:      #if successful login but in blocked state
-            with open(args[5],'a') as blocked:
+            """with open(args[5],'a') as blocked:
                 blocked.write(each+'\n')
-                blocked.close()
-                return
+                blocked.close()"""
+            requests.append(each)
+            return
     if code == '401':
         if ip not in login_fail:
             login_fail[ip] = {'t1' : time, 't2':None,'t3':None,'flag':False}    #first time failed login
